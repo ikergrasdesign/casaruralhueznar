@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Phone } from 'lucide-react'
+import { Menu, X, Phone, Globe } from 'lucide-react'
 
 const navLinks = [
   { name: 'Inicio', path: '/' },
@@ -12,6 +12,7 @@ const navLinks = [
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileOpen, setIsMobileOpen] = useState(false)
+  const [lang, setLang] = useState('ES')
   const location = useLocation()
 
   useEffect(() => {
@@ -25,6 +26,8 @@ export default function Navbar() {
   useEffect(() => {
     setIsMobileOpen(false)
   }, [location])
+
+  const toggleLang = () => setLang(prev => prev === 'ES' ? 'EN' : 'ES')
 
   return (
     <>
@@ -91,6 +94,19 @@ export default function Navbar() {
 
             {/* CTA + Mobile Toggle */}
             <div className="flex items-center gap-4">
+              {/* Language Selector */}
+              <button 
+                onClick={toggleLang}
+                className={`hidden lg:flex items-center gap-1.5 text-[10px] tracking-widest uppercase font-sans font-semibold transition-colors duration-300 px-3 py-1.5 rounded-full border ${
+                  isScrolled 
+                    ? 'border-stone/20 text-stone hover:border-forest hover:text-forest' 
+                    : 'border-cream/20 text-cream/80 hover:border-cream hover:text-cream'
+                }`}
+              >
+                <Globe size={12} />
+                <span>{lang}</span>
+              </button>
+
               <a
                 href="tel:+34955720581"
                 id="nav-phone"
@@ -160,13 +176,21 @@ export default function Navbar() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
+              className="flex flex-col gap-4 items-center"
             >
               <a
                 href="mailto:jmzulategui@gmail.com"
-                className="mt-4 px-8 py-3 bg-gold text-cream text-sm tracking-[0.2em] uppercase font-sans font-semibold rounded-full hover:bg-gold-light transition-all duration-300"
+                className="px-8 py-3 bg-gold text-cream text-sm tracking-[0.2em] uppercase font-sans font-semibold rounded-full hover:bg-gold-light transition-all duration-300"
               >
                 Reservar
               </a>
+              <button 
+                onClick={toggleLang}
+                className="text-cream/60 flex items-center gap-2 text-xs tracking-widest uppercase font-sans"
+              >
+                <Globe size={14} />
+                <span>Idioma: {lang}</span>
+              </button>
             </motion.div>
             <motion.p
               initial={{ opacity: 0 }}

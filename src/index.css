@@ -88,7 +88,7 @@ h1, h2, h3 {
   animation: pulse-soft 2s ease-in-out infinite;
 }
 
-/* ===== IMAGE OVERLAYS ===== */
+/* ===== IMAGE OVERLAYS & QUALITY ===== */
 .img-overlay {
   position: relative;
   overflow: hidden;
@@ -104,6 +104,18 @@ h1, h2, h3 {
     rgba(26, 24, 20, 0.7) 100%
   );
   pointer-events: none;
+}
+
+.img-high-quality {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  filter: brightness(1.02) contrast(1.02) saturate(1.05);
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.img-sharpen {
+  filter: contrast(1.05) brightness(1.02);
 }
 
 /* ===== GLASS ===== */

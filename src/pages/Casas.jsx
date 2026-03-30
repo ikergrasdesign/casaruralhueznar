@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Users, Bed, TreePine, Wifi, Flame, UtensilsCrossed, Car, Sun, Bath } from 'lucide-react'
+import { Users, Bed, TreePine, Wifi, Flame, UtensilsCrossed, Car, Sun, Bath, Search } from 'lucide-react'
 import ScrollReveal from '../components/ScrollReveal'
+import ImageLightbox from '../components/ImageLightbox'
 
 const casas = [
   {
@@ -61,7 +63,25 @@ const casas = [
   },
 ]
 
+// Extra images for the gallery demo (using existing ones since we don't have more)
+const galleryImages = [
+  '/images/casa-17.png',
+  '/images/casa-23.png',
+  '/images/hero-cascadas.png',
+  '/images/via-verde.png',
+  '/images/cerro-hierro.png',
+  '/images/playa-san-nicolas.png'
+]
+
 export default function Casas() {
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false)
+  const [currentImgIndex, setCurrentImgIndex] = useState(0)
+
+  const openLightbox = (index) => {
+    setCurrentImgIndex(index)
+    setIsLightboxOpen(true)
+  }
+
   return (
     <>
       {/* ===== HERO ===== */}
@@ -70,7 +90,7 @@ export default function Casas() {
           <img
             src="/images/casa-17.png"
             alt="Nuestras casas rurales"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover img-high-quality"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-charcoal/40 to-charcoal/20" />
         </div>
@@ -110,12 +130,20 @@ export default function Casas() {
                 animation={idx % 2 === 0 ? 'slideFromLeft' : 'slideFromRight'}
                 className={idx % 2 !== 0 ? 'lg:order-2' : ''}
               >
-                <div className="relative rounded-3xl overflow-hidden aspect-[4/3] group">
+                <div 
+                  className="relative rounded-3xl overflow-hidden aspect-[4/3] group cursor-pointer"
+                  onClick={() => openLightbox(idx)} // idx matches first 2 images
+                >
                   <img
                     src={casa.image}
                     alt={casa.name}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 img-high-quality"
                   />
+                  <div className="absolute inset-0 bg-charcoal/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <div className="bg-cream/20 backdrop-blur-md p-4 rounded-full border border-cream/30">
+                      <Search className="text-cream" size={24} />
+                    </div>
+                  </div>
                   <div className="absolute top-6 left-6">
                     <span className="glass-dark px-4 py-2 rounded-full text-[11px] tracking-[0.2em] uppercase text-cream font-sans font-semibold">
                       {casa.subtitle}
@@ -199,6 +227,42 @@ export default function Casas() {
         </div>
       </section>
 
+      {/* ===== GALLERY GRID SECTION ===== */}
+      <section className="py-24 lg:py-32 bg-warm-beige" id="gallery">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <ScrollReveal className="text-center mb-16">
+            <p className="text-[11px] tracking-[0.35em] uppercase text-forest font-sans font-semibold mb-4">
+              Galería
+            </p>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-charcoal leading-[1.15]">
+              Cada rincón está
+              <br />
+              <span className="font-serif-alt italic font-light text-forest-light">pensado para ti</span>
+            </h2>
+          </ScrollReveal>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 lg:gap-8">
+            {galleryImages.map((img, i) => (
+              <ScrollReveal key={i} delay={i * 0.05}>
+                <div 
+                  className="relative rounded-2xl lg:rounded-3xl overflow-hidden aspect-square group cursor-pointer"
+                  onClick={() => openLightbox(i)}
+                >
+                  <img
+                    src={img}
+                    alt={`Galería ${i}`}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 img-high-quality"
+                  />
+                  <div className="absolute inset-0 bg-charcoal/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <Search className="text-cream" size={24} />
+                  </div>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ===== BOTTOM CTA ===== */}
       <section className="py-20 bg-forest" id="casas-cta">
         <div className="max-w-4xl mx-auto px-6 text-center">
@@ -230,6 +294,15 @@ export default function Casas() {
           </ScrollReveal>
         </div>
       </section>
+
+      {/* Lightbox Component */}
+      <ImageLightbox 
+        isOpen={isLightboxOpen}
+        images={galleryImages}
+        currentIndex={currentImgIndex}
+        setCurrentIndex={setCurrentImgIndex}
+        onClose={() => setIsLightboxOpen(false)}
+      />
     </>
   )
 }

@@ -76,7 +76,7 @@ export default function Entorno() {
           <img
             src="/images/hero-cascadas.png"
             alt="Parque Natural Sierra Norte de Sevilla"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover img-high-quality"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-charcoal/40 to-charcoal/20" />
         </div>
@@ -152,7 +152,7 @@ export default function Entorno() {
                   <img
                     src={dest.image}
                     alt={dest.name}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 img-high-quality"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-charcoal/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   
